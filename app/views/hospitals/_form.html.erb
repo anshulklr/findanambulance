@@ -1,0 +1,44 @@
+<body>
+	<%= form_for @hospital  do |f| %>
+		<% if @hospital.errors.any? %>
+			<div id="explanation">
+				<ul>
+		 			<%= pluralize(@hospital.errors.count,"error") %> prohibited this hospital from being saved 
+		 		</ul>
+				<%= @hospital.errors.full_messages.each do |x|%>
+					<li>
+				 	<%= x %>
+					</li>
+				<%end%>
+			</div>
+		<% end %>
+
+		<p> 
+			<%= f.label :"Hospital Name" %>	
+ 			<%= f.text_field :name %>
+		</p>
+
+		<p>
+			<%= f.label :Address %>
+			<%= f.text_field :address %>
+		</p>
+		<p>
+			<%= f.label :Latitude %>
+			<%= f.text_field :latitude %>
+		</p>
+	
+		<p>
+			<%= f.label :Longitude %>
+			<%= f.text_field :longitude %>
+		</p>
+
+		<p>
+			<%= f.label :number %>
+			<%= f.text_field :number %>
+		</p>
+
+		<p>
+			<%= f.submit %>
+		</p>
+	<% end %>
+</body>

@@ -1,0 +1,38 @@
+<style>
+body
+{
+	font-family: ubuntu mono;
+	font-size: 18px;
+}
+
+
+
+</style>
+
+
+<body>
+<p>
+	<table>
+	<tr>
+		<td>Name:<%= @hospital.name %></td>
+	    <td colspan="2">Latitude:<%= @hospital.latitude %></td>
+        <td colspan="2">&nbsp;&nbsp;&nbsp;Longitude:<%= @hospital.longitude%></td>
+    </tr>
+	<tr>
+	<td> <%= @hospital.address %></td>
+	</tr>
+	<tr> <td><%= @hospital.number %></td></tr>
+	</tr>
+</table>
+</p>
+<h3 align="center">Nearby Locations </h3>
+<ul>
+
+<% for hospital in @hospital.nearbys(8) %>
+	<li style="height:30px; color:black;"><%= link_to hospital.address,hospital ,:style =>"text-decoration:none;"%>(<%= hospital.distance.round(2)	%> miles)</li>
+	<%end%>
+</ul>
+
+<%= link_to 'Back to Hospitals', hospitals_path,:style=>"width:100px; height:20px; text-decoration:none;" %>
+<%= link_to 'Edit Hospitals', edit_hospital_path(@hospital) ,:class =>"getLoc",:style=>"text-decoration:none;"%>
+</body>

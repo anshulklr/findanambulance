@@ -1,0 +1,18 @@
+<body>
+	<%= form_for @patient, :html => {:multipart => true} do |f| %>
+
+		<p> 
+			<%= f.label :"Patient Name" %>	
+ 			<%= f.text_field :name %>
+		</p>
+
+		<p> 
+			<%= f.label :"Upload Report" %>	
+ 			<%= f.file_field :report %>
+		</p>
+		
+		<p>
+			<%= f.submit %>
+		</p>
+	<% end %>
+</body>

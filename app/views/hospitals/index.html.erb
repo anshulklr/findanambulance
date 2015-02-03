@@ -1,0 +1,159 @@
+
+
+
+<script>
+var x = document.getElementById("location");
+
+
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+function showPosition(position) {
+	
+    var lat= position.coords.latitude  ;
+    var lon= position.coords.longitude;
+     
+      document.getElementById('btnloc').disabled = 'disabled';
+    $.ajax({
+   url:'/hospitals/', 
+   data:{
+     "lat": lat,"lon":lon
+   }
+})
+
+$("#search").val(lat+","+lon);
+}
+
+
+function show(){
+	var a=document.getElementById("nop").value;
+	
+	if (a < 3)
+		alert("One Ambulance will be needed.");
+	else
+		alert("More than One Ambulance is needed.");
+}
+</script>
+<style>
+body
+{
+	font-family: ubuntu mono;
+}
+table, td, th {
+    border: 1px solid #ee3344;
+border-collapse:collapse;
+}
+td
+{
+	height : 40px;
+}
+
+th{
+    background-color: #ee3344;
+    color: white;
+    
+    height:50px;
+}
+.getLoc
+{
+	width:200px;
+	background: #ee3344;
+	color:white;
+	height:50px;
+	border: 1px solid white;
+	cursor: pointer;
+}
+
+.getLoc:hover
+{
+	background: white;
+	color:#ee3344;
+	transition:1s all ease;
+}
+.fillArea
+{
+	width:192px;
+	margin-top:0px;
+}
+::-webkit-input-placeholder {
+   text-align: center;
+   color:#ee3344;
+   opacity: 0.5;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   text-align: center; 
+   color:#ee3344; 
+   opacity: 0.5;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   text-align: center; 
+   color:#ee3344;
+   opacity: 0.5; 
+}
+
+:-ms-input-placeholder {  
+   text-align: center; 
+}
+</style>
+<div id="title" align="center" ><h1>Find An Ambulance</h1></div>
+
+
+
+
+<p id="location"></p>
+<body>
+
+<div id="btn" align="center">
+	<button id="btnloc" onclick="getLocation()" class="getLoc">Get My Location</button>
+</div>
+</br>
+
+	
+
+	
+	<div align="center" >
+	<%= form_tag hospitals_path, :method => :get do %>
+			<%= text_field_tag :search,params[:search],:placeholder=>"Or Enter Area",:class=>"fillArea", :style=>"color:#ee3344;" %>
+			</br><%= submit_tag "Find Ambulance Nearby", :onclick => 'header()',:name => nil, :class=>"getLoc"%>
+		
+	<%end%>
+	</div>
+	<br><br><br>
+    <center><input type="text" id="patient" name="patient" style="border:0px;text-align:center;color:#ee3344;"placeholder="Number of Patients" onChange="show()"></center>
+    <hr style="width:200px; color:#ee3344;">
+
+
+<h3 id="datashow" align="center"> <%= @heading_data %> </h3>
+<h4 id="timy" align="right"><%= @timy %></h4>
+
+
+	<table border="1" style="border-collapse: collapse;">
+		<tr> 
+			<th> Name </th>
+			<th colspan ="2"> Address</th>
+			<th colspan ="2"> Number</th>
+			<th colspan ="2"> Nearby To This Place</th>
+			<th colspan ="2" > Diagnostics Report</th>
+		</tr>
+
+		
+			<% @hospitals.each do |x|  %>
+			<tr>
+				<td> <%= x.name %> </td>
+				<td colspan="2"> <%= x.address %> </td>
+				<td colspan="2"> <%= x.number %> </td>
+				<td colspan ="2"><%= link_to 'See hospitals near to this hospital ',hospital_path(x),:style=>"text-decoration:none;color:#ee3344" %></td>
+				<td colspan="2"> <%= link_to 'Send Report', new_patient_path,  :id => x.id,:style=>"text-decoration:none; color:#ee3344"%></td>
+			</tr>
+			<% end %>
+		
+	</table>
+</body>
